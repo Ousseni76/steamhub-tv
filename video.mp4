@@ -1,1 +1,159 @@
 
+<!-- COMÉDIE -->
+<section class="section" id="comedie">
+  <h2>😂 Comédie</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">😂</div>
+      <div class="movie-info">
+        <h3>Comédie 1</h3>
+        <p>Humour • 2026</p>
+        <button onclick="playVideo('videos/comedie.mp4', 'Comédie 1')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🤣</div>
+      <div class="movie-info">
+        <h3>Comédie 2</h3>
+        <p>Humour • 2026</p>
+        <button onclick="playVideo('videos/comedie2.mp4', 'Comédie 2')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- SÉRIES -->
+<section class="section" id="series">
+  <h2>📺 Séries</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">📺</div>
+      <div class="movie-info">
+        <h3>Série 1</h3>
+        <p>Saison 1</p>
+        <button onclick="playVideo('videos/serie1.mp4', 'Série 1')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🎭</div>
+      <div class="movie-info">
+        <h3>Série 2</h3>
+        <p>Saison 1</p>
+        <button onclick="playVideo('videos/serie2.mp4', 'Série 2')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FOOTBALL -->
+<section class="section" id="football">
+  <h2>⚽ Football</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">⚽</div>
+      <div class="movie-info">
+        <h3>Football 1</h3>
+        <p>Sport • 2026</p>
+        <button onclick="playVideo('videos/football1.mp4', 'Football 1')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🏆</div>
+      <div class="movie-info">
+        <h3>Football 2</h3>
+        <p>Sport • 2026</p>
+        <button onclick="playVideo('videos/football2.mp4', 'Football 2')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- JOURNAL -->
+<section class="section" id="journal">
+  <h2>📰 Journal</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">📰</div>
+      <div class="movie-info">
+        <h3>Journal 1</h3>
+        <p>Actualités • 2026</p>
+        <button onclick="playVideo('videos/journal1.mp4', 'Journal 1')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🌍</div>
+      <div class="movie-info">
+        <h3>Journal 2</h3>
+        <p>Actualités • 2026</p>
+        <button onclick="playVideo('videos/journal2.mp4', 'Journal 2')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- AUTRES VIDÉOS -->
+<section class="section" id="autres">
+  <h2>🎥 Autres vidéos</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">🎥</div>
+      <div class="movie-info">
+        <h3>Vidéo 1</h3>
+        <p>Autre contenu</p>
+        <button onclick="playVideo('videos/autre1.mp4', 'Vidéo 1')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🎞️</div>
+      <div class="movie-info">
+        <h3>Vidéo 2</h3>
+        <p>Autre contenu</p>
+        <button onclick="playVideo('videos/autre2.mp4', 'Vidéo 2')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
