@@ -213,7 +213,68 @@
         min-height: 380px;
       }
     }
-  </style>
+  </style>/* FLUX VIDÉO VERTICAL */
+.video-feed {
+  height: 80vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  background: #000;
+}
+
+.video-card {
+  position: relative;
+  height: 80vh;
+  scroll-snap-align: start;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-card video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.video-info {
+  position: absolute;
+  left: 15px;
+  bottom: 25px;
+  max-width: 75%;
+  padding: 12px;
+  background: rgba(0,0,0,.55);
+  border-radius: 10px;
+}
+
+.video-info h3 {
+  margin-bottom: 6px;
+  color: white;
+}
+
+.video-info p {
+  color: #ddd;
+}
+
+.video-actions {
+  position: absolute;
+  right: 15px;
+  bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.video-actions button {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.18);
+  color: white;
+  font-size: 21px;
+}
 </head>
 
 <body>
@@ -312,7 +373,29 @@
     <section class="section" id="series">
       <h2>📺 Séries</h2>
 
-      <div class="movies">
+      <div class="movies"><div class="movie">
+  <div class="poster">📺</div>
+  <div class="movie-info">
+    <h3>Série 1</h3>
+    <p>Saison 1 • Épisode 1</p>
+
+    <button onclick="playVideo('video.mp4')">
+      ▶ Regarder
+    </button>
+  </div>
+</div>
+
+<div class="movie">
+  <div class="poster">🎭</div>
+  <div class="movie-info">
+    <h3>Série 2</h3>
+    <p>Saison 1 • Épisode 1</p>
+
+    <button onclick="playVideo('video.mp4')">
+      ▶ Regarder
+    </button>
+  </div>
+</div>
 
         <div class="movie">
           <div class="poster">📺</div>
@@ -334,7 +417,132 @@
     </section>
 
 
-    <section class="section" id="premium">
+    <section class="section" id="premium"><!-- COMÉDIE -->
+<section class="section" id="comedie">
+  <h2>😂 Comédie</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">😂</div>
+      <div class="movie-info">
+        <h3>Comédie 1</h3>
+        <p>Humour • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🤣</div>
+      <div class="movie-info">
+        <h3>Comédie 2</h3>
+        <p>Humour • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FOOTBALL -->
+<section class="section" id="football">
+  <h2>⚽ Football</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">⚽</div>
+      <div class="movie-info">
+        <h3>Football 1</h3>
+        <p>Sport • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🏆</div>
+      <div class="movie-info">
+        <h3>Football 2</h3>
+        <p>Sport • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- JOURNAL -->
+<section class="section" id="journal">
+  <h2>📰 Journal</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">📰</div>
+      <div class="movie-info">
+        <h3>Journal 1</h3>
+        <p>Actualités • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🌍</div>
+      <div class="movie-info">
+        <h3>Journal 2</h3>
+        <p>Actualités • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- AUTRES VIDÉOS -->
+<section class="section" id="autres">
+  <h2>🎥 Autres vidéos</h2>
+
+  <div class="movies">
+
+    <div class="movie">
+      <div class="poster">🎥</div>
+      <div class="movie-info">
+        <h3>Vidéo 1</h3>
+        <p>Autre contenu • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+    <div class="movie">
+      <div class="poster">🎞️</div>
+      <div class="movie-info">
+        <h3>Vidéo 2</h3>
+        <p>Autre contenu • 2026</p>
+        <button onclick="playVideo('video.mp4')">
+          ▶ Regarder
+        </button>
+      </div>
+    </div>
+
+  </div>
+	</section>
 
       <div class="premium">
         <h2>⭐ SteamHub-TV Premium</h2>
