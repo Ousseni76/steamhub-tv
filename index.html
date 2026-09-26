@@ -1,598 +1,3689 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
 
-  <title>SteamHub-TV</title>
+<title>StreamHub TV</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #0b0b0f;
-      color: white;
-    }
-
-    header {
-      background: #111118;
-      padding: 15px 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid #24242d;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-      color: #00aaff;
-    }
-
-    nav {
-      display: flex;
-      gap: 20px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-    }
-
-    nav a:hover {
-      color: #00aaff;
-    }
-
-    .login {
-      background: #0077ff;
-      padding: 10px 16px;
-      border-radius: 8px;
-      color: white;
-      text-decoration: none;
-    }
-
-    .hero {
-      min-height: 430px;
-      padding: 80px 6%;
-      display: flex;
-      align-items: center;
-      background:
-        linear-gradient(90deg, #08080c 10%, rgba(8,8,12,.75), rgba(8,8,12,.1)),
-        linear-gradient(135deg, #14233c, #09090d);
-    }
-
-    .hero-content {
-      max-width: 600px;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 15px;
-    }
-
-    .hero h1 span {
-      color: #00aaff;
-    }
-
-    .hero p {
-      color: #cccccc;
-      font-size: 18px;
-      line-height: 1.6;
-      margin-bottom: 25px;
-    }
-
-    .watch-button {
-      display: inline-block;
-      background: #00aaff;
-      color: white;
-      text-decoration: none;
-      padding: 13px 22px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .section {
-      padding: 35px 6%;
-    }
-
-    .section h2 {
-      margin-bottom: 20px;
-    }
-
-    .search {
-      width: 100%;
-      max-width: 500px;
-      padding: 14px;
-      border: 1px solid #333;
-      border-radius: 8px;
-      background: #15151c;
-      color: white;
-      margin-bottom: 30px;
-      font-size: 16px;
-    }
-
-    .movies {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 18px;
-    }
-
-    .movie {
-      background: #15151c;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: .2s;
-    }
-
-    .movie:hover {
-      transform: translateY(-5px);
-    }
-
-    .poster {
-      height: 220px;
-      background: linear-gradient(145deg, #16466a, #32194d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 45px;
-    }
-
-    .movie-info {
-      padding: 14px;
-    }
-
-    .movie-info h3 {
-      margin-bottom: 7px;
-    }
-
-    .movie-info p {
-      color: #999;
-      font-size: 14px;
-    }
-
-    .premium {
-      margin-top: 30px;
-      padding: 35px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #132d48, #17132e);
-      text-align: center;
-    }
-
-    .premium h2 {
-      color: #00aaff;
-    }
-
-    .premium p {
-      color: #ccc;
-      margin: 15px 0 20px;
-    }
-
-    .premium-button {
-      display: inline-block;
-      background: #00aaff;
-      color: white;
-      text-decoration: none;
-      padding: 13px 24px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 25px;
-      text-align: center;
-      background: #111118;
-      color: #777;
-    }
-
-    @media (max-width: 700px) {
-      header {
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-
-      nav {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-      }
-
-      .hero h1 {
-        font-size: 36px;
-      }
-
-      .hero {
-        min-height: 380px;
-      }
-    }
-  </style>/* FLUX VIDÉO VERTICAL */
-.video-feed {
-  height: 80vh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  background: #000;
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
 }
 
-.video-card {
-  position: relative;
-  height: 80vh;
-  scroll-snap-align: start;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+html,body{
+  width:100%;
+  min-height:100%;
+  background:#000;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#111;
 }
 
-.video-card video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
+body{
+  overflow-x:hidden;
 }
 
-.video-info {
-  position: absolute;
-  left: 15px;
-  bottom: 25px;
-  max-width: 75%;
-  padding: 12px;
-  background: rgba(0,0,0,.55);
-  border-radius: 10px;
+button,input,textarea,select{
+  font-family:inherit;
 }
 
-.video-info h3 {
-  margin-bottom: 6px;
-  color: white;
+button{
+  border:0;
+  cursor:pointer;
 }
 
-.video-info p {
-  color: #ddd;
+.page{
+  display:none;
+  min-height:100vh;
+  background:#fff;
+  padding-bottom:78px;
 }
 
-.video-actions {
-  position: absolute;
-  right: 15px;
-  bottom: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.page.active{
+  display:block;
 }
 
-.video-actions button {
-  width: 48px;
-  height: 48px;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,.18);
-  color: white;
-  font-size: 21px;
+.hidden{
+  display:none!important;
 }
+
+/* ================= HEADER ================= */
+
+.header{
+  height:64px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  border-bottom:1px solid #eee;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-title{
+  font-size:22px;
+  font-weight:800;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.icon{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#f1f1f1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+}
+
+.icon:active{
+  transform:scale(.93);
+}
+
+/* ================= TABS ================= */
+
+.top-tabs{
+  height:58px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:28px;
+  background:#fff;
+  border-bottom:1px solid #eee;
+  position:sticky;
+  top:64px;
+  z-index:90;
+}
+
+.top-tab{
+  height:58px;
+  background:none;
+  color:#777;
+  font-size:17px;
+  font-weight:700;
+  position:relative;
+}
+
+.top-tab.active{
+  color:#111;
+}
+
+.top-tab.active:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:4px;
+  transform:translateX(-50%);
+  width:32px;
+  height:3px;
+  background:#111;
+  border-radius:5px;
+}
+
+/* ================= VIDEO FEED ================= */
+
+.feed{
+  background:#000;
+}
+
+.video{
+  width:100%;
+  height:calc(100vh - 122px);
+  min-height:650px;
+  position:relative;
+  background:#111;
+  overflow:hidden;
+  color:#fff;
+  touch-action:pan-y;
+}
+
+.video video,
+.video .video-bg{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.video-bg{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:100px;
+  background:linear-gradient(135deg,#171717,#4b4b4b);
+}
+
+.video-gradient{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:55%;
+  background:linear-gradient(transparent,rgba(0,0,0,.82));
+  pointer-events:none;
+}
+
+.video-info{
+  position:absolute;
+  left:16px;
+  right:90px;
+  bottom:28px;
+  z-index:10;
+}
+
+.video-user{
+  font-size:19px;
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.video-title{
+  font-size:17px;
+  line-height:1.4;
+  margin-bottom:7px;
+}
+
+.video-sound{
+  font-size:14px;
+}
+
+.follow{
+  margin-left:7px;
+  padding:7px 13px;
+  background:#ff2448;
+  color:#fff;
+  border-radius:8px;
+  font-weight:800;
+}
+
+.video-actions{
+  position:absolute;
+  right:10px;
+  bottom:25px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  z-index:20;
+}
+
+.action{
+  color:#fff;
+  background:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  text-shadow:0 1px 4px #000;
+}
+
+.action-icon{
+  width:53px;
+  height:53px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  font-size:31px;
+}
+
+.action-count{
+  font-size:12px;
+  font-weight:800;
+}
+
+.action.liked .action-icon{
+  color:#ff2448;
+}
+
+.action.saved .action-icon{
+  color:#ffd000;
+}
+
+.heart-animation{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(.2);
+  font-size:120px;
+  opacity:0;
+  z-index:50;
+  pointer-events:none;
+}
+
+.heart-animation.show{
+  animation:heart .75s ease;
+}
+
+@keyframes heart{
+  0%{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(.2);
+  }
+  25%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1.25);
+  }
+  65%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(1.4);
+  }
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:78px;
+  background:rgba(255,255,255,.98);
+  border-top:1px solid #ddd;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  z-index:500;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+
+.nav{
+  background:none;
+  min-width:65px;
+  color:#555;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.nav.active{
+  color:#000;
+}
+
+.nav-icon{
+  font-size:27px;
+}
+
+.plus{
+  width:60px;
+  height:44px;
+  background:#111;
+  color:#fff;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:31px;
+}
+
+/* ================= GENERAL ================= */
+
+.content{
+  padding:18px 16px 30px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e5e5e5;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:14px;
+}
+
+.title{
+  font-size:24px;
+  font-weight:900;
+  margin-bottom:18px;
+}
+
+.big-button{
+  width:100%;
+  min-height:54px;
+  background:#111;
+  color:#fff;
+  border-radius:13px;
+  font-size:16px;
+  font-weight:800;
+  margin-top:10px;
+}
+
+.light-button{
+  width:100%;
+  min-height:52px;
+  background:#f0f0f0;
+  color:#111;
+  border-radius:13px;
+  font-size:16px;
+  font-weight:800;
+}
+
+input,textarea,select{
+  width:100%;
+  background:#fafafa;
+  border:1px solid #ddd;
+  border-radius:13px;
+  padding:15px;
+  font-size:16px;
+  margin-bottom:12px;
+  outline:none;
+}
+
+textarea{
+  min-height:110px;
+}
+
+/* ================= PROFILE ================= */
+
+.profile-head{
+  padding:13px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #eee;
+}
+
+.profile-head-title{
+  font-size:22px;
+  font-weight:900;
+}
+
+.profile-avatar{
+  width:108px;
+  height:108px;
+  margin:22px auto 10px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#eee,#aaa);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:60px;
+  position:relative;
+}
+
+.story-plus{
+  position:absolute;
+  right:-3px;
+  bottom:3px;
+  width:36px;
+  height:36px;
+  background:#ff2448;
+  color:#fff;
+  border-radius:50%;
+  border:3px solid #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+}
+
+.profile-name{
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+}
+
+.certified{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:#168cff;
+  color:#fff;
+  font-size:13px;
+  margin-left:4px;
+}
+
+.handle{
+  text-align:center;
+  color:#777;
+  margin-top:4px;
+}
+
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:35px;
+  margin:21px 0;
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:20px;
+}
+
+.stat span{
+  color:#777;
+  font-size:13px;
+}
+
+.profile-buttons{
+  display:flex;
+  gap:9px;
+  padding:0 16px;
+}
+
+.profile-buttons button{
+  flex:1;
+  min-height:48px;
+  border-radius:10px;
+  background:#eee;
+  font-weight:800;
+}
+
+.profile-buttons button:first-child{
+  background:#111;
+  color:#fff;
+}
+
+/* stories */
+
+.stories{
+  display:flex;
+  gap:17px;
+  padding:20px 16px;
+  overflow-x:auto;
+}
+
+.story{
+  flex:0 0 70px;
+  text-align:center;
+}
+
+.story-circle{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:#eee;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  margin:auto auto 6px;
+  border:2px solid #ddd;
+}
+
+.story-name{
+  font-size:12px;
+  font-weight:700;
+}
+
+/* profile tabs */
+
+.profile-tabs{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  border-top:1px solid #eee;
+  border-bottom:1px solid #eee;
+}
+
+.profile-tab{
+  height:54px;
+  background:#fff;
+  font-size:22px;
+  color:#777;
+}
+
+.profile-tab.active{
+  color:#111;
+  border-bottom:3px solid #111;
+}
+
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+}
+
+.grid-item{
+  aspect-ratio:9/16;
+  background:#ddd;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:43px;
+  position:relative;
+}
+
+.grid-item small{
+  position:absolute;
+  right:5px;
+  top:5px;
+  color:#fff;
+  text-shadow:0 1px 4px #000;
+}
+
+/* ================= SETTINGS ================= */
+
+.setting-title{
+  font-size:20px;
+  font-weight:900;
+  padding:18px 16px 8px;
+}
+
+.setting-item{
+  width:100%;
+  min-height:67px;
+  background:#fff;
+  border-bottom:1px solid #eee;
+  display:flex;
+  align-items:center;
+  padding:9px 16px;
+  text-align:left;
+  gap:14px;
+}
+
+.setting-icon{
+  width:40px;
+  font-size:26px;
+  text-align:center;
+}
+
+.setting-main{
+  flex:1;
+}
+
+.setting-name{
+  font-size:17px;
+  font-weight:700;
+}
+
+.setting-sub{
+  color:#888;
+  font-size:13px;
+  margin-top:4px;
+}
+
+.arrow{
+  font-size:25px;
+  color:#aaa;
+}
+
+/* ================= CAMERA ================= */
+
+.camera{
+  position:fixed;
+  inset:0;
+  background:#000;
+  color:#fff;
+  z-index:1000;
+  display:none;
+  flex-direction:column;
+}
+
+.camera.open{
+  display:flex;
+}
+
+.camera-head{
+  height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 15px;
+}
+
+.camera-view{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#cameraVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.camera-bottom{
+  min-height:155px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.camera-tools{
+  display:flex;
+  gap:22px;
+}
+
+.camera-tool{
+  width:47px;
+  height:47px;
+  border-radius:50%;
+  background:#222;
+  color:#fff;
+  font-size:20px;
+}
+
+.record{
+  width:76px;
+  height:76px;
+  border-radius:50%;
+  background:#fff;
+  border:7px solid #777;
+}
+
+.file-button{
+  padding:10px 16px;
+  border-radius:11px;
+  background:#222;
+  color:#fff;
+  font-weight:800;
+}
+
+#videoFile{
+  display:none;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:2000;
+  display:none;
+  align-items:flex-end;
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-box{
+  width:100%;
+  max-height:88vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:22px 22px 0 0;
+  padding:20px;
+}
+
+.modal-title{
+  font-size:22px;
+  font-weight:900;
+  margin-bottom:17px;
+}
+
+.close{
+  width:100%;
+  min-height:50px;
+  border-radius:13px;
+  background:#eee;
+  font-weight:800;
+  margin-top:10px;
+}
+
+/* ================= PREMIUM ================= */
+
+.premium{
+  background:#111;
+  color:#fff;
+  border-radius:22px;
+  padding:25px;
+}
+
+.price{
+  font-size:40px;
+  font-weight:900;
+  margin:14px 0;
+}
+
+.premium p{
+  color:#ccc;
+  line-height:1.5;
+}
+
+/* ================= QR ================= */
+
+.qr{
+  width:220px;
+  height:220px;
+  margin:25px auto;
+  background:
+  repeating-linear-gradient(
+    45deg,
+    #111 0,
+    #111 8px,
+    #fff 8px,
+    #fff 15px
+  );
+  border:15px solid #fff;
+  box-shadow:0 0 0 1px #111;
+}
+
+/* ================= SWITCH ================= */
+
+.switch{
+  width:53px;
+  height:31px;
+  background:#ccc;
+  border-radius:30px;
+  position:relative;
+}
+
+.switch:after{
+  content:"";
+  width:25px;
+  height:25px;
+  background:#fff;
+  border-radius:50%;
+  position:absolute;
+  left:3px;
+  top:3px;
+  transition:.2s;
+}
+
+.switch.on{
+  background:#111;
+}
+
+.switch.on:after{
+  left:25px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(min-width:700px){
+
+  .video{
+    max-width:600px;
+    margin:auto;
+  }
+
+  .content{
+    max-width:700px;
+    margin:auto;
+  }
+
+  .bottom-nav{
+    width:700px;
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+  }
+
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <div class="logo">🎬 SteamHub-TV</div>
+<!-- =====================================================
+     ACCUEIL
+===================================================== -->
 
-    <nav>
-      <a href="#accueil">Accueil</a>
-      <a href="#films">Films</a>
-      <a href="#series">Séries</a>
-      <a href="#premium">Premium</a>
-    </nav>
+<section id="home" class="page active">
 
-    <a class="login" href="#">Se connecter</a>
-  </header>
+  <div class="header">
+
+    <button class="icon"
+      onclick="openSearch()">
+      🔍
+    </button>
+
+    <div class="header-title">
+      Accueil
+    </div>
+
+    <button class="icon"
+      onclick="openMessages()">
+      💬
+    </button>
+
+  </div>
+
+  <div class="top-tabs">
+
+    <button class="top-tab"
+      onclick="feedTab('following',this)">
+      Suivis
+    </button>
+
+    <button class="top-tab active"
+      onclick="feedTab('foryou',this)">
+      Pour toi
+    </button>
+
+    <button class="top-tab"
+      onclick="feedTab('popular',this)">
+      Populaire
+    </button>
+
+  </div>
 
 
-  <main id="accueil">
+  <div class="feed">
 
-    <section class="hero">
-      <div class="hero-content">
-        <h1>Bienvenue sur <span>SteamHub-TV</span></h1>
+    <!-- VIDEO 1 -->
 
-        <p>
-          Regarde tes films, séries et programmes préférés
-          depuis une seule plateforme.
-        </p>
+    <article class="video"
+      ondblclick="doubleLike(0)">
 
-        <a class="watch-button" href="#films">
-          ▶ Regarder maintenant
-        </a>
+      <div class="video-bg">
+        🎬
       </div>
-    </section>
+
+      <div class="video-gradient"></div>
+
+      <div id="heart0"
+        class="heart-animation">
+        ❤️
+      </div>
+
+      <div class="video-info">
+
+        <div class="video-user">
+          @createur
+          <button class="follow"
+            onclick="follow(event,0)">
+            Suivre
+          </button>
+        </div>
+
+        <div class="video-title">
+          Bienvenue dans les vidéos de la communauté 🎬
+        </div>
+
+        <div class="video-sound">
+          🎵 Son original
+        </div>
+
+      </div>
+
+      <div class="video-actions">
+
+        <button id="like0"
+          class="action"
+          onclick="like(0)">
+          <span class="action-icon">
+            ❤️
+          </span>
+          <span id="likeCount0"
+            class="action-count">
+            0
+          </span>
+        </button>
+
+        <button class="action"
+          onclick="comments()">
+          <span class="action-icon">
+            💬
+          </span>
+          <span class="action-count">
+            0
+          </span>
+        </button>
+
+        <button id="save0"
+          class="action"
+          onclick="favorite(0)">
+          <span class="action-icon">
+            🔖
+          </span>
+          <span class="action-count">
+            Favori
+          </span>
+        </button>
+
+        <button class="action"
+          onclick="share()">
+          <span class="action-icon">
+            ↗️
+          </span>
+          <span class="action-count">
+            Partager
+          </span>
+        </button>
+
+      </div>
+
+    </article>
 
 
-    <section class="section" id="films"><section class="section" id="lecteur">
-  <h2>🎬 Lecteur vidéo</h2>
-  <video controls width="100%" style="max-width: 900px;">
-    <source src="video.mp4" type="video/mp4">
-    Votre navigateur ne prend pas en charge la lecture vidéo.
-  </video>
-  </section>
+    <!-- VIDEO 2 -->
+
+    <article class="video"
+      ondblclick="doubleLike(1)">
+
+      <div class="video-bg">
+        🎵
+      </div>
+
+      <div class="video-gradient"></div>
+
+      <div id="heart1"
+        class="heart-animation">
+        ❤️
+      </div>
+
+      <div class="video-info">
+
+        <div class="video-user">
+          @music
+          <button class="follow"
+            onclick="follow(event,1)">
+            Suivre
+          </button>
+        </div>
+
+        <div class="video-title">
+          Nouvelle musique Afro 🔥🎵
+        </div>
+
+        <div class="video-sound">
+          🎵 Afro Original
+        </div>
+
+      </div>
+
+      <div class="video-actions">
+
+        <button id="like1"
+          class="action"
+          onclick="like(1)">
+          <span class="action-icon">
+            ❤️
+          </span>
+          <span id="likeCount1"
+            class="action-count">
+            0
+          </span>
+        </button>
+
+        <button class="action"
+          onclick="comments()">
+          <span class="action-icon">
+            💬
+          </span>
+          <span class="action-count">
+            0
+          </span>
+        </button>
+
+        <button id="save1"
+          class="action"
+          onclick="favorite(1)">
+          <span class="action-icon">
+            🔖
+          </span>
+          <span class="action-count">
+            Favori
+          </span>
+        </button>
+
+        <button class="action"
+          onclick="share()">
+          <span class="action-icon">
+            ↗️
+          </span>
+          <span class="action-count">
+            Partager
+          </span>
+        </button>
+
+      </div>
+
+    </article>
 
 
-      <h2>🔎 Rechercher</h2>
+    <!-- VIDEO 3 -->
+
+    <article class="video"
+      ondblclick="doubleLike(2)">
+
+      <div class="video-bg">
+        ⚽
+      </div>
+
+      <div class="video-gradient"></div>
+
+      <div id="heart2"
+        class="heart-animation">
+        ❤️
+      </div>
+
+      <div class="video-info">
+
+        <div class="video-user">
+          @sport
+          <button class="follow"
+            onclick="follow(event,2)">
+            Suivre
+          </button>
+        </div>
+
+        <div class="video-title">
+          Actualité et sport ⚽
+        </div>
+
+        <div class="video-sound">
+          🎵 Son original
+        </div>
+
+      </div>
+
+      <div class="video-actions">
+
+        <button id="like2"
+          class="action"
+          onclick="like(2)">
+          <span class="action-icon">
+            ❤️
+          </span>
+          <span id="likeCount2"
+            class="action-count">
+            0
+          </span>
+        </button>
+
+        <button class="action"
+          onclick="comments()">
+          <span class="action-icon">
+            💬
+          </span>
+          <span class="action-count">
+            0
+          </span>
+        </button>
+
+        <button id="save2"
+          class="action"
+          onclick="favorite(2)">
+          <span class="action-icon">
+            🔖
+          </span>
+          <span class="action-count">
+            Favori
+          </span>
+        </button>
+
+        <button class="action"
+          onclick="share()">
+          <span class="action-icon">
+            ↗️
+          </span>
+          <span class="action-count">
+            Partager
+          </span>
+        </button>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROFIL
+===================================================== -->
+
+<section id="profile" class="page">
+
+  <div class="profile-head">
+
+    <button class="icon"
+      onclick="show('home')">
+      ←
+    </button>
+
+    <div class="profile-head-title">
+      Profil
+    </div>
+
+    <button class="icon"
+      onclick="show('settings')">
+      ⚙️
+    </button>
+
+  </div>
+
+
+  <div class="profile-avatar">
+
+    👤
+
+    <!-- + = STORY -->
+
+    <button class="story-plus"
+      onclick="addStory()">
+      +
+    </button>
+
+  </div>
+
+
+  <div class="profile-name">
+
+    <span id="accountName">
+      Créateur
+    </span>
+
+    <span class="certified"
+      title="Compte certifié">
+      ✓
+    </span>
+
+  </div>
+
+  <div id="accountHandle"
+    class="handle">
+    @createur
+  </div>
+
+
+  <div class="stats">
+
+    <div class="stat">
+      <strong id="following">
+        0
+      </strong>
+      <span>Suivis</span>
+    </div>
+
+    <div class="stat">
+      <strong id="followers">
+        0
+      </strong>
+      <span>Followers</span>
+    </div>
+
+    <div class="stat">
+      <strong id="totalLikes">
+        0
+      </strong>
+      <span>J'aime</span>
+    </div>
+
+  </div>
+
+
+  <div class="profile-buttons">
+
+    <button onclick="editAccount()">
+      Modifier
+    </button>
+
+    <button onclick="openMessages()">
+      Message
+    </button>
+
+  </div>
+
+
+  <!-- STORIES -->
+
+  <div class="stories">
+
+    <div class="story"
+      onclick="addStory()">
+
+      <div class="story-circle">
+        +
+      </div>
+
+      <div class="story-name">
+        Ajouter
+      </div>
+
+    </div>
+
+    <div class="story">
+
+      <div class="story-circle">
+        ⭐
+      </div>
+
+      <div class="story-name">
+        Temps fort
+      </div>
+
+    </div>
+
+    <div class="story">
+
+      <div class="story-circle">
+        🎵
+      </div>
+
+      <div class="story-name">
+        Musique
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="profile-tabs">
+
+    <button class="profile-tab active"
+      onclick="profileTab('videos',this)">
+      ▦
+    </button>
+
+    <button class="profile-tab"
+      onclick="profileTab('private',this)">
+      🔒
+    </button>
+
+    <button class="profile-tab"
+      onclick="profileTab('repost',this)">
+      🔁
+    </button>
+
+    <button class="profile-tab"
+      onclick="profileTab('favorite',this)">
+      🔖
+    </button>
+
+    <button class="profile-tab"
+      onclick="profileTab('liked',this)">
+      ❤️
+    </button>
+
+  </div>
+
+
+  <div id="profileGrid"
+    class="video-grid">
+
+    <div class="grid-item">
+      🎬
+    </div>
+
+    <div class="grid-item">
+      🎵
+    </div>
+
+    <div class="grid-item">
+      ⚽
+    </div>
+
+  </div>
+
+
+  <div id="favoriteGrid"
+    class="video-grid hidden">
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PARAMÈTRES
+===================================================== -->
+
+<section id="settings" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('profile')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Paramètres
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+
+  <div class="setting-title">
+    Activités
+  </div>
+
+  <button class="setting-item"
+    onclick="openActivityPage()">
+
+    <div class="setting-icon">
+      🕐
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Centre des activités
+      </div>
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openOfflinePage()">
+
+    <div class="setting-icon">
+      📥
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Téléchargements hors ligne
+      </div>
+
+      <div class="setting-sub">
+        Gérer les vidéos téléchargées
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openQRPage()">
+
+    <div class="setting-icon">
+      🔳
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Ton code QR
+      </div>
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <div class="setting-title">
+    Créateur et entreprise
+  </div>
+
+
+  <button class="setting-item"
+    onclick="openBusinessPage()">
+
+    <div class="setting-icon">
+      🏪
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Espace entreprise
+      </div>
+
+      <div class="setting-sub">
+        Gérer ton activité
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openStudioPage()">
+
+    <div class="setting-icon">
+      🎬
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Studio créateur
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openPromotePage()">
+
+    <div class="setting-icon">
+      🔥
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Promouvoir
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <div class="setting-title">
+    Compte
+  </div>
+
+
+  <button class="setting-item"
+    onclick="openAccountPage()">
+
+    <div class="setting-icon">
+      👤
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Compte
+      </div>
+
+      <div class="setting-sub">
+        Modifier les informations du compte
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openPrivacyPage()">
+
+    <div class="setting-icon">
+      🔒
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Confidentialité
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openNotificationsPage()">
+
+    <div class="setting-icon">
+      🔔
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Notifications
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <button class="setting-item"
+    onclick="openSecurityPage()">
+
+    <div class="setting-icon">
+      🛡️
+    </div>
+
+    <div class="setting-main">
+      <div class="setting-name">
+        Sécurité
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+
+  <div class="setting-title">
+    Application
+  </div>
+
+
+  <button class="setting-item"
+    onclick="openAboutPage()">
+
+    <div class="setting-icon">
+      ℹ️
+    </div>
+
+    <div class="setting-main">
+
+      <div class="setting-name">
+        À propos de l'application
+      </div>
+
+      <div class="setting-sub">
+        StreamHub TV
+      </div>
+
+    </div>
+
+    <div class="arrow">
+      ›
+    </div>
+
+  </button>
+
+</section>
+
+
+<!-- =====================================================
+     SOUS-PAGES
+===================================================== -->
+
+<section id="activity" class="page">
+
+  <div class="header">
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Centre des activités
+    </div>
+
+    <div style="width:45px"></div>
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+      <h2>🕐 Activité récente</h2>
+      <p style="margin-top:10px;color:#777">
+        Tes activités sur l'application apparaîtront ici.
+      </p>
+    </div>
+
+    <div class="card">
+      <strong>❤️ J'aime</strong>
+      <p style="margin-top:7px;color:#777">
+        Tes vidéos aimées.
+      </p>
+    </div>
+
+    <div class="card">
+      <strong>🔖 Favoris</strong>
+      <p style="margin-top:7px;color:#777">
+        Tes vidéos enregistrées.
+      </p>
+    </div>
+
+    <div class="card">
+      <strong>👥 Suivis</strong>
+      <p style="margin-top:7px;color:#777">
+        Les comptes que tu suis.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="offline" class="page">
+
+  <div class="header">
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Hors ligne
+    </div>
+
+    <div style="width:45px"></div>
+  </div>
+
+  <div class="content">
+
+    <div class="card"
+      style="text-align:center">
+
+      <div style="font-size:60px">
+        📥
+      </div>
+
+      <h2>
+        Vidéos hors ligne
+      </h2>
+
+      <p style="margin-top:10px;color:#777">
+        Les vidéos téléchargées pourront être regardées sans connexion.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="qr" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Ton code QR
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content"
+    style="text-align:center">
+
+    <div class="qr"></div>
+
+    <h2>
+      @createur
+    </h2>
+
+    <p style="color:#777;margin-top:8px">
+      Scanne ce code pour ouvrir le profil.
+    </p>
+
+    <button class="big-button"
+      onclick="shareQR()">
+      ↗️ Partager mon QR
+    </button>
+
+  </div>
+
+</section>
+
+
+<section id="business" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Espace entreprise
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+
+      <h2>🏪 Ton entreprise</h2>
+
+      <p style="margin:10px 0;color:#777">
+        Crée une page pour présenter tes produits ou ton activité.
+      </p>
 
       <input
-        class="search"
-        id="search"
-        type="text"
-        placeholder="Rechercher un film ou une série..."
-        onkeyup="searchMovies()"
-      >
+        placeholder="Nom de l'entreprise">
 
-      <h2>🔥 Films populaires</h2>
+      <textarea
+        placeholder="Description de l'entreprise"></textarea>
 
-      <div class="movies" id="movieList">
+      <button class="big-button"
+        onclick="saveBusiness()">
+        Enregistrer
+      </button>
 
-        <div class="movie">
-          <div class="poster">🎬</div>
-          <div class="movie-info">
-            <h3>Film 1</h3>
-            <p>Action • 2026</p>
-          </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="studio" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Studio créateur
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+      <h2>🎬 Studio créateur</h2>
+      <p style="margin-top:10px;color:#777">
+        Gère tes publications et ton contenu.
+      </p>
+    </div>
+
+    <div class="card">
+      <strong>📊 Statistiques</strong>
+      <p style="margin-top:8px;color:#777">
+        Vues : 0<br>
+        J'aime : 0<br>
+        Followers : 0
+      </p>
+    </div>
+
+    <button class="big-button"
+      onclick="openCamera()">
+      + Créer une vidéo
+    </button>
+
+  </div>
+
+</section>
+
+
+<section id="promote" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Promouvoir
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+
+      <h2>🔥 Promouvoir une vidéo</h2>
+
+      <p style="margin:10px 0;color:#777">
+        Sélectionne une publication et configure ta promotion.
+      </p>
+
+      <select>
+        <option>Choisir une vidéo</option>
+        <option>Vidéo 1</option>
+        <option>Vidéo 2</option>
+      </select>
+
+      <select>
+        <option>Objectif</option>
+        <option>Plus de vues</option>
+        <option>Plus de visites</option>
+      </select>
+
+      <button class="big-button"
+        onclick="startPromotion()">
+        Continuer
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="account" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Compte
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+
+      <h2>
+        👤 Informations du compte
+      </h2>
+
+      <input
+        id="newName"
+        placeholder="Nom du compte">
+
+      <input
+        id="newHandle"
+        placeholder="@identifiant">
+
+      <button class="big-button"
+        onclick="saveAccount()">
+        Enregistrer
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="privacy" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Confidentialité
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+
+      <h3>
+        🔒 Qui peut voir tes vidéos ?
+      </h3>
+
+      <select id="videoPrivacy">
+        <option>Tout le monde</option>
+        <option>Abonnés</option>
+        <option>Privé</option>
+      </select>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>
+        💬 Commentaires
+      </h3>
+
+      <select>
+        <option>Tout le monde</option>
+        <option>Abonnés</option>
+        <option>Personne</option>
+      </select>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="notifications" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Notifications
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+
+      <h3>
+        🔔 Notifications
+      </h3>
+
+      <button class="setting-item"
+        style="padding:10px 0"
+        onclick="toggleSetting(this)">
+
+        <div class="setting-main">
+          Notifications générales
         </div>
 
-        <div class="movie">
-          <div class="poster">🚀</div>
-          <div class="movie-info">
-            <h3>Film 2</h3>
-            <p>Science-fiction • 2026</p>
-          </div>
+        <div class="switch on"></div>
+
+      </button>
+
+      <button class="setting-item"
+        style="padding:10px 0"
+        onclick="toggleSetting(this)">
+
+        <div class="setting-main">
+          Nouveaux messages
         </div>
 
-        <div class="movie">
-          <div class="poster">🦸</div>
-          <div class="movie-info">
-            <h3>Film 3</h3>
-            <p>Aventure • 2026</p>
-          </div>
+        <div class="switch on"></div>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="security" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Sécurité
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card">
+
+      <h2>🛡️ Sécurité du compte</h2>
+
+      <button class="big-button"
+        onclick="securityMessage()">
+        Vérifier la sécurité
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="about" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('settings')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Application
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="card"
+      style="text-align:center">
+
+      <div style="font-size:55px">
+        🎬
+      </div>
+
+      <h2>
+        StreamHub TV
+      </h2>
+
+      <p style="margin-top:10px;color:#777">
+        Application vidéo et création de contenu.
+      </p>
+
+      <p style="margin-top:15px">
+        Version 1.0
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MESSAGES
+===================================================== -->
+
+<section id="messages" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('profile')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Messages
+    </div>
+
+    <div class="header-actions">
+
+      <span style="
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      background:#111;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:900;">
+        2
+      </span>
+
+      <button class="icon"
+        onclick="newMessage()">
+        👥
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="content">
+
+    <input
+      id="messageSearch"
+      placeholder="Rechercher"
+      oninput="searchMessages()">
+
+
+    <div class="card"
+      onclick="openChat('Créateur 1')">
+
+      <div style="
+      display:flex;
+      align-items:center;
+      gap:13px;">
+
+        <div style="
+        width:56px;
+        height:56px;
+        border-radius:50%;
+        background:#eee;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:28px;">
+          👤
         </div>
 
-        <div class="movie">
-          <div class="poster">👽</div>
-          <div class="movie-info">
-            <h3>Film 4</h3>
-            <p>Fantastique • 2026</p>
-          </div>
+        <div style="flex:1">
+
+          <strong>
+            Créateur 1
+          </strong>
+
+          <p style="
+          color:#777;
+          margin-top:5px;">
+            Nouvelle vidéo
+          </p>
+
         </div>
+
+        <b style="
+        width:25px;
+        height:25px;
+        border-radius:50%;
+        background:#ff2448;
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:12px;">
+          1
+        </b>
 
       </div>
-    </section>
+
+    </div>
 
 
-    <section class="section" id="series">
-      <h2>📺 Séries</h2>
+    <div class="card"
+      onclick="openChat('Music Zone')">
 
-      <div class="movies"><div class="movie">
-  <div class="poster">📺</div>
-  <div class="movie-info">
-    <h3>Série 1</h3>
-    <p>Saison 1 • Épisode 1</p>
+      <div style="
+      display:flex;
+      align-items:center;
+      gap:13px;">
 
-    <button onclick="playVideo('video.mp4')">
-      ▶ Regarder
-    </button>
+        <div style="
+        width:56px;
+        height:56px;
+        border-radius:50%;
+        background:#eee;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:28px;">
+          🎵
+        </div>
+
+        <div style="flex:1">
+
+          <strong>
+            Music Zone
+          </strong>
+
+          <p style="
+          color:#777;
+          margin-top:5px;">
+            Nouveau son
+          </p>
+
+        </div>
+
+        <b style="
+        width:25px;
+        height:25px;
+        border-radius:50%;
+        background:#ff2448;
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:12px;">
+          1
+        </b>
+
+      </div>
+
+    </div>
+
   </div>
+
+</section>
+
+
+<!-- =====================================================
+     SEARCH
+===================================================== -->
+
+<section id="search" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('home')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Rechercher
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <input
+      id="searchInput"
+      placeholder="Rechercher une vidéo..."
+      oninput="searchContent()">
+
+    <div id="results">
+
+      <div class="card">
+        🎬 Films
+      </div>
+
+      <div class="card">
+        🎵 Musique
+      </div>
+
+      <div class="card">
+        ⚽ Sport
+      </div>
+
+      <div class="card">
+        😂 Humour
+      </div>
+
+      <div class="card">
+        📰 Journal
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     CAMERA
+===================================================== -->
+
+<div id="camera"
+  class="camera">
+
+  <div class="camera-head">
+
+    <button class="icon"
+      style="background:#222;color:#fff"
+      onclick="closeCamera()">
+      ✕
+    </button>
+
+    <strong style="font-size:20px">
+      Créer
+    </strong>
+
+    <button class="icon"
+      style="background:#222;color:#fff"
+      onclick="switchCamera()">
+      🔄
+    </button>
+
+  </div>
+
+
+  <div class="camera-view">
+
+    <video
+      id="cameraVideo"
+      autoplay
+      playsinline>
+    </video>
+
+  </div>
+
+
+  <div class="camera-bottom">
+
+    <div class="camera-tools">
+
+      <button class="camera-tool"
+        onclick="toggleMirror()">
+        🪞
+      </button>
+
+      <button class="camera-tool"
+        onclick="cameraPermission()">
+        📷
+      </button>
+
+      <button class="camera-tool"
+        onclick="microphonePermission()">
+        🎤
+      </button>
+
+    </div>
+
+    <button class="record"
+      onclick="recordMessage()">
+    </button>
+
+    <label class="file-button">
+
+      📁 Choisir une vidéo
+
+      <input
+        id="videoFile"
+        type="file"
+        accept="video/*"
+        onchange="chooseVideo(event)">
+
+    </label>
+
+  </div>
+
 </div>
 
-<div class="movie">
-  <div class="poster">🎭</div>
-  <div class="movie-info">
-    <h3>Série 2</h3>
-    <p>Saison 1 • Épisode 1</p>
 
-    <button onclick="playVideo('video.mp4')">
-      ▶ Regarder
+<!-- =====================================================
+     CHAT MODAL
+===================================================== -->
+
+<div id="chatModal"
+  class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-title"
+      id="chatName">
+      Message
+    </div>
+
+    <div class="card">
+      Bonjour 👋
+    </div>
+
+    <input
+      id="chatInput"
+      placeholder="Écrire un message...">
+
+    <button class="big-button"
+      onclick="sendChat()">
+      Envoyer
     </button>
+
+    <button class="close"
+      onclick="closeChat()">
+      Fermer
+    </button>
+
   </div>
+
 </div>
 
-        <div class="movie">
-          <div class="poster">📺</div>
-          <div class="movie-info">
-            <h3>Série 1</h3>
-            <p>Saison 1</p>
-          </div>
-        </div>
 
-        <div class="movie">
-          <div class="poster">🎭</div>
-          <div class="movie-info">
-            <h3>Série 2</h3>
-            <p>Saison 1</p>
-          </div>
-        </div>
+<!-- =====================================================
+     COMMENTAIRES MODAL
+===================================================== -->
 
-      </div>
-    </section>
+<div id="commentModal"
+  class="modal">
 
+  <div class="modal-box">
 
-    <section class="section" id="premium"><!-- COMÉDIE -->
-<section class="section" id="comedie">
-  <h2>😂 Comédie</h2>
-
-  <div class="movies">
-
-    <div class="movie">
-      <div class="poster">😂</div>
-      <div class="movie-info">
-        <h3>Comédie 1</h3>
-        <p>Humour • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
-      </div>
+    <div class="modal-title">
+      Commentaires
     </div>
 
-    <div class="movie">
-      <div class="poster">🤣</div>
-      <div class="movie-info">
-        <h3>Comédie 2</h3>
-        <p>Humour • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
+    <div class="card">
+      Aucun commentaire pour le moment.
+    </div>
+
+    <input
+      id="commentInput"
+      placeholder="Ajouter un commentaire...">
+
+    <button class="big-button"
+      onclick="sendComment()">
+      Publier
+    </button>
+
+    <button class="close"
+      onclick="closeComments()">
+      Fermer
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     PREMIUM
+===================================================== -->
+
+<section id="premium" class="page">
+
+  <div class="header">
+
+    <button class="icon"
+      onclick="show('profile')">
+      ←
+    </button>
+
+    <div class="header-title">
+      Premium
+    </div>
+
+    <div style="width:45px"></div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="premium">
+
+      <h2>
+        💎 Premium
+      </h2>
+
+      <div class="price">
+        500 F CFA
       </div>
+
+      <p>
+        Paiement unique.<br>
+        Accès permanent.
+      </p>
+
+      <button class="big-button"
+        style="background:#fff;color:#111"
+        onclick="premiumPay()">
+        Activer Premium
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <h2>
+        🔴 LIVE
+      </h2>
+
+      <p style="
+      color:#777;
+      margin-top:9px;">
+        Disponible à partir de 1 000 abonnés.
+      </p>
+
+      <button class="big-button"
+        onclick="checkLive()">
+        Vérifier mon accès
+      </button>
+
     </div>
 
   </div>
+
 </section>
 
 
-<!-- FOOTBALL -->
-<section class="section" id="football">
-  <h2>⚽ Football</h2>
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
 
-  <div class="movies">
+<nav class="bottom-nav">
 
-    <div class="movie">
-      <div class="poster">⚽</div>
-      <div class="movie-info">
-        <h3>Football 1</h3>
-        <p>Sport • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
+  <button class="nav active"
+    onclick="show('home')">
+
+    <span class="nav-icon">
+      ⌂
+    </span>
+
+    Accueil
+
+  </button>
+
+
+  <button class="nav"
+    onclick="openMessages()">
+
+    <span class="nav-icon">
+      👥
+    </span>
+
+    Amis
+
+  </button>
+
+
+  <button class="nav"
+    onclick="openCamera()">
+
+    <span class="plus">
+      +
+    </span>
+
+  </button>
+
+
+  <button class="nav"
+    onclick="openMessages()">
+
+    <span class="nav-icon">
+      💬
+    </span>
+
+    Messages
+
+  </button>
+
+
+  <button class="nav"
+    onclick="show('profile')">
+
+    <span class="nav-icon">
+      👤
+    </span>
+
+    Profil
+
+  </button>
+
+</nav>
+
+
+<script>
+
+/* =====================================================
+   STOCKAGE
+===================================================== */
+
+let likes =
+JSON.parse(
+  localStorage.getItem("sh_likes") || "{}"
+);
+
+let favorites =
+JSON.parse(
+  localStorage.getItem("sh_favorites") || "{}"
+);
+
+let follows =
+JSON.parse(
+  localStorage.getItem("sh_follows") || "{}"
+);
+
+let accountName =
+localStorage.getItem("sh_name") ||
+"Créateur";
+
+let accountHandle =
+localStorage.getItem("sh_handle") ||
+"@createur";
+
+let subscribers =
+Number(
+  localStorage.getItem("sh_subscribers") || 0
+);
+
+let cameraStream = null;
+
+let facingMode = "user";
+
+let mirrored = true;
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function show(id){
+
+  document
+  .querySelectorAll(".page")
+  .forEach(page=>{
+    page.classList.remove("active");
+  });
+
+  const page =
+  document.getElementById(id);
+
+  if(page){
+    page.classList.add("active");
+  }
+
+  window.scrollTo(0,0);
+
+}
+
+
+function openMessages(){
+  show("messages");
+}
+
+
+function openSearch(){
+  show("search");
+}
+
+
+/* =====================================================
+   FEED
+===================================================== */
+
+function feedTab(type,button){
+
+  document
+  .querySelectorAll(".top-tab")
+  .forEach(tab=>{
+    tab.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  if(type==="following"){
+    alert("Vidéos des comptes que tu suis.");
+  }
+
+  if(type==="foryou"){
+    window.scrollTo(0,0);
+  }
+
+  if(type==="popular"){
+    alert("Vidéos populaires.");
+  }
+
+}
+
+
+/* =====================================================
+   LIKE
+===================================================== */
+
+function like(id){
+
+  likes[id] = !likes[id];
+
+  localStorage.setItem(
+    "sh_likes",
+    JSON.stringify(likes)
+  );
+
+  updateLike(id);
+
+}
+
+
+function updateLike(id){
+
+  const button =
+  document.getElementById("like"+id);
+
+  const count =
+  document.getElementById("likeCount"+id);
+
+  if(!button) return;
+
+  if(likes[id]){
+
+    button.classList.add("liked");
+
+    count.textContent="1";
+
+  }else{
+
+    button.classList.remove("liked");
+
+    count.textContent="0";
+
+  }
+
+}
+
+
+function doubleLike(id){
+
+  if(!likes[id]){
+    likes[id]=true;
+
+    localStorage.setItem(
+      "sh_likes",
+      JSON.stringify(likes)
+    );
+  }
+
+  updateLike(id);
+
+  const heart =
+  document.getElementById("heart"+id);
+
+  if(heart){
+
+    heart.classList.remove("show");
+
+    void heart.offsetWidth;
+
+    heart.classList.add("show");
+
+  }
+
+}
+
+
+/* =====================================================
+   FAVORIS
+===================================================== */
+
+function favorite(id){
+
+  favorites[id]=!favorites[id];
+
+  localStorage.setItem(
+    "sh_favorites",
+    JSON.stringify(favorites)
+  );
+
+  updateFavorite(id);
+
+  if(favorites[id]){
+    alert("⭐ Vidéo ajoutée aux favoris.");
+  }else{
+    alert("Vidéo retirée des favoris.");
+  }
+
+}
+
+
+function updateFavorite(id){
+
+  const button =
+  document.getElementById("save"+id);
+
+  if(!button) return;
+
+  button.classList.toggle(
+    "saved",
+    !!favorites[id]
+  );
+
+}
+
+
+function renderFavorites(){
+
+  const grid =
+  document.getElementById(
+    "favoriteGrid"
+  );
+
+  grid.innerHTML="";
+
+  const ids =
+  Object.keys(favorites)
+  .filter(id=>favorites[id]);
+
+  if(ids.length===0){
+
+    grid.innerHTML=`
+      <div style="
+      grid-column:1/-1;
+      padding:50px 20px;
+      text-align:center;
+      color:#777;">
+        🔖<br><br>
+        Aucun favori pour le moment.
       </div>
-    </div>
+    `;
 
-    <div class="movie">
-      <div class="poster">🏆</div>
-      <div class="movie-info">
-        <h3>Football 2</h3>
-        <p>Sport • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
-      </div>
-    </div>
+    return;
+  }
 
-  </div>
-</section>
+  ids.forEach(id=>{
 
+    const item =
+    document.createElement("div");
 
-<!-- JOURNAL -->
-<section class="section" id="journal">
-  <h2>📰 Journal</h2>
+    item.className="grid-item";
 
-  <div class="movies">
+    item.innerHTML=`
+      🎬
+      <small>🔖</small>
+    `;
 
-    <div class="movie">
-      <div class="poster">📰</div>
-      <div class="movie-info">
-        <h3>Journal 1</h3>
-        <p>Actualités • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
-      </div>
-    </div>
+    grid.appendChild(item);
 
-    <div class="movie">
-      <div class="poster">🌍</div>
-      <div class="movie-info">
-        <h3>Journal 2</h3>
-        <p>Actualités • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
-      </div>
-    </div>
+  });
 
-  </div>
-</section>
+}
 
 
-<!-- AUTRES VIDÉOS -->
-<section class="section" id="autres">
-  <h2>🎥 Autres vidéos</h2>
+/* =====================================================
+   PROFIL TABS
+===================================================== */
 
-  <div class="movies">
+function profileTab(type,button){
 
-    <div class="movie">
-      <div class="poster">🎥</div>
-      <div class="movie-info">
-        <h3>Vidéo 1</h3>
-        <p>Autre contenu • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
-      </div>
-    </div>
+  document
+  .querySelectorAll(".profile-tab")
+  .forEach(tab=>{
+    tab.classList.remove("active");
+  });
 
-    <div class="movie">
-      <div class="poster">🎞️</div>
-      <div class="movie-info">
-        <h3>Vidéo 2</h3>
-        <p>Autre contenu • 2026</p>
-        <button onclick="playVideo('video.mp4')">
-          ▶ Regarder
-        </button>
-      </div>
-    </div>
+  button.classList.add("active");
 
-  </div>
-	</section>
+  const normal =
+  document.getElementById(
+    "profileGrid"
+  );
 
-      <div class="premium">
-        <h2>⭐ SteamHub-TV Premium</h2>
+  const favoriteGrid =
+  document.getElementById(
+    "favoriteGrid"
+  );
 
-        <p>
-          Accède aux contenus Premium et profite d'une
-          meilleure expérience de streaming.
-        </p>
+  if(type==="favorite"){
 
-        <a class="premium-button" href="#">
-          Voir les abonnements
-        </a>
-      </div>
+    normal.classList.add("hidden");
 
-    </section>
+    favoriteGrid.classList.remove(
+      "hidden"
+    );
 
-  </main>
+    renderFavorites();
 
+  }else{
 
-  <footer>
-    © 2026 SteamHub-TV — Tous droits réservés.
-  </footer>
+    normal.classList.remove(
+      "hidden"
+    );
+
+    favoriteGrid.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
 
 
-  <script>
-    function searchMovies() {
+/* =====================================================
+   FOLLOW
+===================================================== */
 
-      const input = document
-        .getElementById("search")
-        .value
-        .toLowerCase();
+function follow(event,id){
 
-      const movies = document.querySelectorAll(".movie");
+  event.stopPropagation();
 
-      movies.forEach(function(movie) {
+  follows[id]=!follows[id];
 
-        const title = movie
-          .querySelector("h3")
-          .textContent
-          .toLowerCase();
+  localStorage.setItem(
+    "sh_follows",
+    JSON.stringify(follows)
+  );
 
-        if (title.includes(input)) {
-          movie.style.display = "block";
-        } else {
-          movie.style.display = "none";
-        }
+  event.currentTarget.textContent =
+  follows[id]
+  ? "Suivi"
+  : "Suivre";
+
+  updateFollowing();
+
+}
+
+
+function updateFollowing(){
+
+  const total =
+  Object.values(follows)
+  .filter(Boolean).length;
+
+  document.getElementById(
+    "following"
+  ).textContent=total;
+
+}
+
+
+/* =====================================================
+   STORY
+===================================================== */
+
+function addStory(){
+
+  alert(
+    "📸 Ajouter une Story\n\n" +
+    "La caméra va s'ouvrir pour créer ta Story."
+  );
+
+  openCamera();
+
+}
+
+
+/* =====================================================
+   COMPTE
+===================================================== */
+
+function editAccount(){
+
+  show("account");
+
+  document.getElementById(
+    "newName"
+  ).value=accountName;
+
+  document.getElementById(
+    "newHandle"
+  ).value=accountHandle;
+
+}
+
+
+function saveAccount(){
+
+  const name =
+  document.getElementById(
+    "newName"
+  ).value.trim();
+
+  const handle =
+  document.getElementById(
+    "newHandle"
+  ).value.trim();
+
+  if(name){
+    accountName=name;
+  }
+
+  if(handle){
+    accountHandle =
+    handle.startsWith("@")
+    ? handle
+    : "@"+handle;
+  }
+
+  localStorage.setItem(
+    "sh_name",
+    accountName
+  );
+
+  localStorage.setItem(
+    "sh_handle",
+    accountHandle
+  );
+
+  document.getElementById(
+    "accountName"
+  ).textContent=accountName;
+
+  document.getElementById(
+    "accountHandle"
+  ).textContent=accountHandle;
+
+  alert(
+    "Compte modifié ✓"
+  );
+
+  show("profile");
+
+}
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+async function openCamera(){
+
+  document
+  .getElementById("camera")
+  .classList.add("open");
+
+  await startCamera();
+
+}
+
+
+async function startCamera(){
+
+  try{
+
+    if(cameraStream){
+
+      cameraStream
+      .getTracks()
+      .forEach(track=>{
+        track.stop();
+      });
+
+    }
+
+    cameraStream =
+    await navigator
+    .mediaDevices
+    .getUserMedia({
+
+      video:{
+        facingMode:facingMode
+      },
+
+      audio:true
+
+    });
+
+    const video =
+    document.getElementById(
+      "cameraVideo"
+    );
+
+    video.srcObject =
+    cameraStream;
+
+    video.style.transform =
+    mirrored &&
+    facingMode==="user"
+    ? "scaleX(-1)"
+    : "scaleX(1)";
+
+  }catch(error){
+
+    alert(
+      "Autorise l'accès à la caméra et au microphone dans les paramètres du navigateur."
+    );
+
+  }
+
+}
+
+
+function closeCamera(){
+
+  if(cameraStream){
+
+    cameraStream
+    .getTracks()
+    .forEach(track=>{
+      track.stop();
+    });
+
+    cameraStream=null;
+
+  }
+
+  document
+  .getElementById("camera")
+  .classList.remove("open");
+
+}
+
+
+async function switchCamera(){
+
+  facingMode =
+  facingMode==="user"
+  ? "environment"
+  : "user";
+
+  mirrored =
+  facingMode==="user";
+
+  await startCamera();
+
+}
+
+
+function toggleMirror(){
+
+  mirrored=!mirrored;
+
+  document
+  .getElementById("cameraVideo")
+  .style.transform =
+  mirrored
+  ? "scaleX(-1)"
+  : "scaleX(1)";
+
+}
+
+
+async function cameraPermission(){
+
+  try{
+
+    const stream =
+    await navigator
+    .mediaDevices
+    .getUserMedia({
+      video:true
+    });
+
+    stream
+    .getTracks()
+    .forEach(track=>{
+      track.stop();
+    });
+
+    alert(
+      "Accès caméra autorisé ✓"
+    );
+
+    startCamera();
+
+  }catch(e){
+
+    alert(
+      "Accès caméra refusé."
+    );
+
+  }
+
+}
+
+
+async function microphonePermission(){
+
+  try{
+
+    const stream =
+    await navigator
+    .mediaDevices
+    .getUserMedia({
+      audio:true
+    });
+
+    stream
+    .getTracks()
+    .forEach(track=>{
+      track.stop();
+    });
+
+    alert(
+      "Accès microphone autorisé ✓"
+    );
+
+  }catch(e){
+
+    alert(
+      "Accès microphone refusé."
+    );
+
+  }
+
+}
+
+
+function chooseVideo(event){
+
+  const file =
+  event.target.files[0];
+
+  if(!file) return;
+
+  const url =
+  URL.createObjectURL(file);
+
+  const video =
+  document.getElementById(
+    "cameraVideo"
+  );
+
+  if(cameraStream){
+
+    cameraStream
+    .getTracks()
+    .forEach(track=>{
+      track.stop();
+    });
+
+    cameraStream=null;
+
+  }
+
+  video.srcObject=null;
+  video.src=url;
+  video.controls=true;
+  video.play();
+
+}
+
+
+function recordMessage(){
+
+  alert(
+    "La caméra est prête pour créer ta vidéo ou ta Story."
+  );
+
+}
+
+
+/* =====================================================
+   PARTAGE
+===================================================== */
+
+async function share(){
+
+  try{
+
+    if(navigator.share){
+
+      await navigator.share({
+
+        title:"StreamHub TV",
+
+        text:
+        "Regarde cette vidéo sur StreamHub TV."
 
       });
+
+    }else{
+
+      await navigator.clipboard.writeText(
+        window.location.href
+      );
+
+      alert(
+        "Lien copié ✓"
+      );
+
     }
-  </script>
+
+  }catch(e){}
+
+}
+
+
+function shareQR(){
+
+  share();
+
+}
+
+
+/* =====================================================
+   RECHERCHE
+===================================================== */
+
+function searchContent(){
+
+  const value =
+  document
+  .getElementById("searchInput")
+  .value
+  .toLowerCase();
+
+  document
+  .querySelectorAll("#results .card")
+  .forEach(card=>{
+
+    card.style.display =
+    card.textContent
+    .toLowerCase()
+    .includes(value)
+    ? "block"
+    : "none";
+
+  });
+
+}
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+function openChat(name){
+
+  document.getElementById(
+    "chatName"
+  ).textContent=name;
+
+  document
+  .getElementById("chatModal")
+  .classList.add("open");
+
+}
+
+
+function closeChat(){
+
+  document
+  .getElementById("chatModal")
+  .classList.remove("open");
+
+}
+
+
+function sendChat(){
+
+  const input =
+  document.getElementById(
+    "chatInput"
+  );
+
+  if(!input.value.trim()) return;
+
+  alert(
+    "Message envoyé ✓"
+  );
+
+  input.value="";
+
+}
+
+
+function newMessage(){
+
+  alert(
+    "Créer une nouvelle conversation."
+  );
+
+}
+
+
+function searchMessages(){
+
+  const value =
+  document
+  .getElementById("messageSearch")
+  .value
+  .toLowerCase();
+
+  document
+  .querySelectorAll("#messages .card")
+  .forEach(card=>{
+
+    card.style.display =
+    card.textContent
+    .toLowerCase()
+    .includes(value)
+    ? "block"
+    : "none";
+
+  });
+
+}
+
+
+/* =====================================================
+   COMMENTAIRES
+===================================================== */
+
+function comments(){
+
+  document
+  .getElementById("commentModal")
+  .classList.add("open");
+
+}
+
+
+function closeComments(){
+
+  document
+  .getElementById("commentModal")
+  .classList.remove("open");
+
+}
+
+
+function sendComment(){
+
+  const input =
+  document.getElementById(
+    "commentInput"
+  );
+
+  if(!input.value.trim()) return;
+
+  alert(
+    "Commentaire publié ✓"
+  );
+
+  input.value="";
+
+}
+
+
+/* =====================================================
+   PARAMÈTRES — PAGES
+===================================================== */
+
+function openActivityPage(){
+  show("activity");
+}
+
+function openOfflinePage(){
+  show("offline");
+}
+
+function openQRPage(){
+  show("qr");
+}
+
+function openBusinessPage(){
+  show("business");
+}
+
+function openStudioPage(){
+  show("studio");
+}
+
+function openPromotePage(){
+  show("promote");
+}
+
+function openAccountPage(){
+  editAccount();
+}
+
+function openPrivacyPage(){
+  show("privacy");
+}
+
+function openNotificationsPage(){
+  show("notifications");
+}
+
+function openSecurityPage(){
+  show("security");
+}
+
+function openAboutPage(){
+  show("about");
+}
+
+
+/* =====================================================
+   PARAMÈTRES INTERACTIFS
+===================================================== */
+
+function toggleSetting(item){
+
+  const sw =
+  item.querySelector(".switch");
+
+  if(sw){
+    sw.classList.toggle("on");
+  }
+
+}
+
+
+function securityMessage(){
+
+  alert(
+    "🛡️ Vérification terminée.\n\n" +
+    "Ton interface de sécurité est prête."
+  );
+
+}
+
+
+function saveBusiness(){
+
+  alert(
+    "🏪 Informations de l'entreprise enregistrées dans cette version."
+  );
+
+}
+
+
+function startPromotion(){
+
+  alert(
+    "🔥 Configuration de promotion enregistrée."
+  );
+
+}
+
+
+/* =====================================================
+   PREMIUM
+===================================================== */
+
+function premiumPay(){
+
+  alert(
+    "💎 Premium\n\n" +
+    "500 F CFA — paiement unique — accès permanent.\n\n" +
+    "Le paiement réel devra être connecté à un prestataire de paiement."
+  );
+
+}
+
+
+function checkLive(){
+
+  if(subscribers>=1000){
+
+    alert(
+      "🔴 LIVE disponible."
+    );
+
+  }else{
+
+    alert(
+      "🔒 LIVE verrouillé.\n\n" +
+      "Il faut atteindre 1 000 abonnés.\n\n" +
+      "Actuellement : "+subscribers
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+function init(){
+
+  document.getElementById(
+    "accountName"
+  ).textContent=accountName;
+
+  document.getElementById(
+    "accountHandle"
+  ).textContent=accountHandle;
+
+  [0,1,2].forEach(id=>{
+
+    updateLike(id);
+    updateFavorite(id);
+
+  });
+
+  updateFollowing();
+
+}
+
+init();
+
+
+/* =====================================================
+   DOUBLE TAP TACTILE
+===================================================== */
+
+document
+.querySelectorAll(".video")
+.forEach((video,index)=>{
+
+  let lastTap=0;
+
+  video.addEventListener(
+    "touchend",
+    function(){
+
+      const now=
+      Date.now();
+
+      if(now-lastTap<350){
+
+        doubleLike(index);
+
+      }
+
+      lastTap=now;
+
+    }
+  );
+
+});
+
+</script>
 
 </body>
-	</html>
+		  </html>
